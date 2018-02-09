@@ -1,0 +1,35 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Zaif WebSocket</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    
+</body>
+<script>
+    // Create WebSocket connection.
+    var socket = new WebSocket('ws://ws.zaif.jp/stream?currency_pair=btc_jpy'),
+        body = document.getElementsByTagName('body')[0];
+
+    // Connection opened
+    socket.addEventListener('open', function (event) {
+        console.log('Connected.');
+    });
+    
+    // Listen for messages
+    socket.addEventListener('message', function (event){
+        var json = JSON.parse(event.data), p;
+
+        if (json.last_price && json.last_price.price) {
+            console.log(json.last_price.price);
+
+            p = document.createElement('p');
+            p.textContent = json.last_price.price;
+            body.appendChild(p);
+        }
+    });
+</script>
+</html>
